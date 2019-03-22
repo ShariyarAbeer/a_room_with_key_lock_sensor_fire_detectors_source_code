@@ -1,4 +1,3 @@
-//Test
 #include <Keypad.h>
 #include <SoftwareSerial.h>
 
