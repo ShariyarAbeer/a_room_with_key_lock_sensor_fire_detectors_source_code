@@ -4,7 +4,7 @@
 
 const byte ROWS = 4;
 const byte COLS = 3;
-boolean out = true;
+boolean outs = true;
 int LED = 7;
 
 char hexaKeys[ROWS][COLS] = {
@@ -63,7 +63,7 @@ void setup() {
 void loop() {
   char customKey = customKeypad.getKey();
 
-  if (out) {
+  if (outs) {
     digitalWrite(LED, HIGH);
   } else {
     digitalWrite(LED, LOW);
@@ -84,11 +84,11 @@ void loop() {
     Serial.println("To much press");
     pass = "";
     countpress = 0;
-    SendMessage();
+    SendMessage("Security Breach");
   }
   if (password == pass) {
     pass = "";
-    out = false;
+    outs = false;
     Serial.println("pass");
   }
   if (customKey) {
@@ -96,8 +96,8 @@ void loop() {
     if (password == pass) {
       Serial.println("wng");
       pass = "";
-      if (out) {
-        SendMessage();
+      if (outs) {
+         // SendMessage();
         delay(1000);
         sendSms = true;
         Serial.println("SMS Send");
@@ -105,9 +105,10 @@ void loop() {
     }
   }
   //-------------------------------------Reset System---------------------------
-  if (pass == "*") {
-    out = true;
+  if (temp == "*") {
+    outs = true;
     pass = "";
+    countpress = 0;
     Serial.println("reset");
     sendSms = false;
   }
@@ -116,8 +117,8 @@ void loop() {
   if (val == HIGH) {            // check if the input is HIGH
     Serial.println("Motion detected!");
     delay(5000);
-    if (out) {
-      SendMessage();
+    if (outs) {
+      SendMessage("Abnormal Activity");
       delay(50);
       sendSms = true;
       Serial.println("SMS Send");
@@ -129,7 +130,7 @@ void loop() {
     if (v == HIGH) {
       Serial.println("Smoke is High");
       Serial.println("Sms Send");
-      SendMessage();
+      SendMessage("Smoke alarm");
       delay(500);
       sendSms = true;
     }
@@ -143,13 +144,17 @@ void loop() {
 
 }
 
-void SendMessage()
+void SendMessage(String msg)
 {
+  Serial.println("Sending Message ");
+  Serial.print(msg);
+  Serial.println(" ");
+  
   SIM900.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  SIM900.println("AT+CMGS=\"+8801558985372\"\r"); // Replace x with mobile number
+  SIM900.println("AT+CMGS=\"+8801920871929\"\r"); // Replace x with mobile number
   delay(1000);
-  SIM900.println("Home on Fire");// The SMS text you want to send
+  SIM900.println(msg);// The SMS text you want to send
   delay(100);
   SIM900.println((char)26);// ASCII code of CTRL+Z
   delay(1000);
