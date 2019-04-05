@@ -92,7 +92,7 @@ void loop() {
     Serial.println("pass");
   }
   if (customKey) {
-    passWorng += String(customKey);
+    //passWorng += String(customKey);
     if (password == pass) {
       Serial.println("wng");
       pass = "";
@@ -130,7 +130,7 @@ void loop() {
     if (v == HIGH) {
       Serial.println("Smoke is High");
       Serial.println("Sms Send");
-      SendMessage("Smoke alarm");
+      SendMessageFire("Smoke alarm for Fire");
       delay(500);
       sendSms = true;
     }
@@ -153,6 +153,24 @@ void SendMessage(String msg)
   SIM900.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
   SIM900.println("AT+CMGS=\"+8801920871929\"\r"); // Replace x with mobile number
+  
+  delay(1000);
+  SIM900.println(msg);// The SMS text you want to send
+  delay(100);
+  SIM900.println((char)26);// ASCII code of CTRL+Z
+  delay(1000);
+
+}
+void SendMessageFire(String msg)        //For Somke Msg..
+{
+  Serial.println("Sending Message ");
+  Serial.print(msg);
+  Serial.println(" ");
+  
+  SIM900.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
+  delay(1000);  // Delay of 1000 milli seconds or 1 second
+  SIM900.println("AT+CMGS=\"+8801920871929\"\r"); // Replace x with mobile number
+  
   delay(1000);
   SIM900.println(msg);// The SMS text you want to send
   delay(100);
