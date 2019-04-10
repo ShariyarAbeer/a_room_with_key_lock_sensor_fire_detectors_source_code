@@ -17,7 +17,7 @@ char hexaKeys[ROWS][COLS] = {
 byte rowPins[ROWS] = {0, 1, 2, 3};
 byte colPins[COLS] = {4, 5, 6};
 
-String password = "123#";
+String password = "1837";
 String pass;
 String passWorng;
 int index_number;
@@ -84,7 +84,14 @@ void loop() {
     Serial.println("To much press");
     pass = "";
     countpress = 0;
-    SendMessage("Security Breach");
+    if (outs) {
+         // SendMessage();
+        delay(1000);
+        sendSms = true;
+        Serial.println("SMS Send");
+         SendMessage("Security Breach");
+      }
+   
   }
   if (password == pass) {
     pass = "";
@@ -116,7 +123,7 @@ void loop() {
   val = digitalRead(inputPin);  // read input value
   if (val == HIGH) {            // check if the input is HIGH
     Serial.println("Motion detected!");
-    delay(5000);
+    //delay(5000);
     if (outs) {
       SendMessage("Abnormal Activity");
       delay(50);
@@ -152,7 +159,7 @@ void SendMessage(String msg)
   
   SIM900.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  SIM900.println("AT+CMGS=\"+8801920871929\"\r"); // Replace x with mobile number
+  SIM900.println("AT+CMGS=\"+8801753528116\"\r"); // Replace x with mobile number
   
   delay(1000);
   SIM900.println(msg);// The SMS text you want to send
@@ -169,7 +176,7 @@ void SendMessageFire(String msg)        //For Somke Msg..
   
   SIM900.println("AT+CMGF=1");    //Sets the GSM Module in Text Mode
   delay(1000);  // Delay of 1000 milli seconds or 1 second
-  SIM900.println("AT+CMGS=\"+8801920871929\"\r"); // Replace x with mobile number
+  SIM900.println("AT+CMGS=\"+8801758676854\"\r"); // Replace x with mobile number
   
   delay(1000);
   SIM900.println(msg);// The SMS text you want to send
